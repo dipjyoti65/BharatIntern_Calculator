@@ -1,0 +1,87 @@
+07:54 AM 09-07-2023  // Set onClickListeners for number buttons
+        Button[] numberButtons = new Button[11];
+        int[] numberButtonIds = {
+                 R.id.button_0, R.id.button_00, R.id.button_1 , R.id.button_2, R.id.button_3, R.id.button_4, R.id.button_5, R.id.button_6, R.id.button_7,R.id.button_8,R.id.button_9
+        };
+
+        for (int i = 0; i < 11; i++) {
+            final int finalI = i;
+            numberButtons[i] = findViewById(numberButtonIds[i]);
+            numberButtons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateNumber(finalI);
+                }
+            });
+        }
+
+        // Set onClickListeners for operator buttons
+        Button addButton = findViewById(R.id.buttonAdd);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation();
+                operator = "+";
+            }
+        });
+
+        // Repeat the above for other operator buttons
+
+        // Equals button
+        Button equalsButton = findViewById(R.id.buttonEquals);
+        equalsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCalculation();
+                operator = "";
+                calculateResult();
+            }
+        });
+    }
+
+    private void updateNumber(int number) {
+        currentNumber.append(number);
+        resultTextView.setText(currentNumber.toString());
+    }
+
+    private void performCalculation() {
+        if (currentNumber.length() > 0) {
+            double number = Double.parseDouble(currentNumber.toString());
+            if (operator.equals("+")) {
+                calculationResult += number;
+            } else if (operator.equals("-")) {
+                calculationResult -= number;
+            } else if (operator.equals("*")) {
+                calculationResult *= number;
+            } else if (operator.equals("/")) {
+                calculationResult /= number;
+            } else {
+                calculationResult = number;
+            }
+            currentNumber.setLength(0);
+        }
+    }
+
+    private void calculateResult() {
+        if (currentNumber.length() > 0) {
+            double number = Double.parseDouble(currentNumber.toString());
+            if (operator.equals("+")) {
+                calculationResult += number;
+            } else if (operator.equals("-")) {
+                calculationResult -= number;
+            } else if (operator.equals("*")) {
+                calculationResult *= number;
+            } else if (operator.equals("/")) {
+                calculationResult /= number;
+            }
+            currentNumber.setLength(0);
+        }
+
+        resultTextView.setText(String.valueOf(calculationResult));
+    }
+
+    private void clearCalculator() {
+        calculationResult = 0.0;
+        currentNumber.setLength(0);
+        operator = "";
+        resultTextView.setText("0");
